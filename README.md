@@ -3,9 +3,13 @@
 - [Get Started](#get-started)
 - [API Authentication](#api-authentication)
 - [Services](#services)
-    - [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend)
-    - [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend)
+  - [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend)
+  - [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend)
 - [Mock Server](#mock-server)
+  - [How to compile](#how-to-compile)
+  - [Setup configuration](#setup-configuration)
+  - [Services](#services)
+  
 
 	
 
@@ -23,6 +27,10 @@
 - support@bitgin.net
 ### Try it now
 - Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.
+  - Step 1: Deploy the Mock Server
+  - Step 2: Call `MOCK_SERVER_DOMAIN/bitgin-pay-url` to get BITGIN Frontend URL
+  - Step 3: Open the URL then complete payment
+  - Step 4: Call `MOCK_SERVER_DOMAIN/bitgin-receipt` to acquire payment receipts
 
 ##### [Back to top](#table-of-contents)
 
@@ -37,12 +45,8 @@
 
 ##### [Back to top](#table-of-contents)
 
-<br />
 
 # Services
-
-<br />
-
 
 ## FaaS Payment Through BITGIN Frontend
 
@@ -106,25 +110,9 @@ The response includes the following parameters:
 | :---  | :---  | :---        |
 | url | string |  URL is the payment site provided by BITGIN|
 
-
-##### Error Code
-
-| HTTP Code | Error Code | Error | Message | Description |
-| :---      | :---       | :---  | :---    | :---        |
-| 403 | -   | Forbidden. Invalid ID | - | No wallet ID found |
-| 403 | -   | Forbidden. Header not found | - | Missing `X-API-CODE`, `X-CHECKSUM` header or query param `t` |
-| 403 | -   | Forbidden. Invalid timestamp | - | The timestamp `t` is not in the valid time range |
-| 403 | -   | Forbidden. Invalid checksum | - | The request is considered a replay request |
-| 403 | -   | Forbidden. Invalid API code | - | `X-API-CODE` header contains invalid API code |
-| 403 | -   | Invalid API code for wallet {WALLET_ID} | - | The API code mismatched |
-| 403 | -   | Forbidden. Checksum unmatch | - | `X-CHECKSUM` header contains wrong checksum |
-| 403 | -   | Forbidden. Call too frequently ({THROTTLING_COUNT} calls/minute) | - | Send requests too frequently |
-| 403 | 385   | API Secret not valid | - | Invalid API code permission |
-
 ##### [Back to top](#table-of-contents)
 
 
-<br />
 <br />
 
 ## FaaS Get Receipt From BITGIN Backend
@@ -263,7 +251,6 @@ The response includes the following parameters:
 ##### [Back to top](#table-of-contents)
 
 <br />
-<br />
 
 # Mock Server
 
@@ -286,8 +273,10 @@ $ go run main.go
 
 >	NOTE: Configure in main.go
 ```go
-key    = "<API_KEY>"  // API_KEY acquired from BITGIN
-secret = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
+frontend_endpoint = "<FRONTEND_ENDPOINT>"
+backend_endpoint  = "<BACKEND_ENDPOINT>"
+key               = "<API_KEY>"  // API_KEY acquired from BITGIN
+secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 ```
 
 ### Services
@@ -297,7 +286,7 @@ secret = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 ```
 /bitgin-pay-url
 ```
-##### Post Body & 
+##### Post Body
 [Request Body](#faas-payment-through-bitgin-frontend)
 
 <br />

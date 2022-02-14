@@ -22,8 +22,8 @@ import (
 
 const (
 	// Config
-	frontend_endpoint = "https://stage.bitgin.app/fiat-as-a-service"
-	backend_endpoint  = "https://api.bitgin.app"
+	frontend_endpoint = "<FRONTEND_ENDPOINT>"
+	backend_endpoint  = "<BACKEND_ENDPOINT>"
 	key               = "<API_KEY>"    // API_KEY acquired from BITGIN
 	secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 )

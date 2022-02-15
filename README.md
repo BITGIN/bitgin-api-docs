@@ -464,6 +464,7 @@ $ git clone https://github.com/BITGIN/faas-api-docs.git
 
 - Install [Go](https://go.dev/dl/)
 
+- [Setsup Configuration](#setup-configuration)
 
 - Run mock server
 ```
@@ -472,12 +473,12 @@ $ go run main.go
 
 ## Setup configuration
 
->	NOTE: Configure in main.go
+>	NOTE: Configure in /config/config.go
 ```go
-frontend_endpoint = "<FRONTEND_ENDPOINT>"
-backend_endpoint  = "<BACKEND_ENDPOINT>"
-key               = "<API_KEY>"  // API_KEY acquired from BITGIN
-secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
+Frontend_Endpoint = "<FRONTEND_ENDPOINT>"
+Backend_Endpoint  = "<BACKEND_ENDPOINT>"
+Key               = "<API_KEY>"  // API_KEY acquired from BITGIN
+Secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 ```
 
 ## REST API of Mock Server

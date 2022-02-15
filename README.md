@@ -16,6 +16,16 @@
   - [Setup configuration](#setup-configuration)
   - [REST API of Mock Server](#rest-api-of-mock-server)
 	
+
+# API Authentication
+- The first things you need to use the FaaS is your API key and your secret key.
+- You can use API key and secret key to generate the necessary parameters that contain  `SIGN` , `KEY` , `NONCE`
+
+### How to sign your data ?
+- Please refer to the code snippet on the github project to know how to sign your data.
+	- [Go](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)
+
+##### [Back to top](#table-of-contents)
 # Fiat-as-a-Service
 
 - The quickest way to build conversion-optimized cryptocurrency payment forms, hosted on BITGIN.
@@ -23,7 +33,7 @@
 - Fiat-as-a-Service creates a secure, BITGIN-hosted payment page that lets you collect payments quickly. It works across cryptocurrency and can help increase your conversion. Fiat-as-a-Service makes it easy to build a first-class payments experience.
 
 ### How to contact BITGIN ? 
-- support@bitgin.net
+- [Contact us](https://bitgin.freshdesk.com/support/tickets/new)
 ### Try it now
 - Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.
   - Step 1: Deploy the Mock Server
@@ -33,16 +43,6 @@
 
 ##### [Back to top](#table-of-contents)
 
-
-# API Authentication
-- The first things you need to use the FaaS is your API key and your secret key.
-- You can use API key and secret key to generate the necessary parameters that contain  `SIGN` , `KEY` , `NONCE`
-
-### How to sign your data ?
-- Please refer to the code snippet on the github project to know how to sign your data.
-	- [Go](https://github.com/BITGIN/faas-api-docs/blob/main/main.go#L103)
-
-##### [Back to top](#table-of-contents)
 
 
 # Services
@@ -254,7 +254,7 @@ The response includes the following parameters:
 # Mine Share Services
 
 ### How to contact BITGIN ? 
-- support@bitgin.net
+- [Contact us](https://bitgin.freshdesk.com/support/tickets/new)
 ### Try it now
 
 - Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.

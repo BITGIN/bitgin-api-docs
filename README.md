@@ -6,7 +6,7 @@
     - [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend)
     - [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend)
 
-- [Mine Share Service]()
+- [Mine Share Service](#mine-share-service)
   - [REST API](#rest-api)
     - [Query BITGIN Addresses](#query-bitgin-addresses)
     - [Mine Share](#mine-share)
@@ -251,7 +251,7 @@ The response includes the following parameters:
 
 <br />
 
-# Mine Share Services
+# Mine Share Service
 
 ### How to contact BITGIN ? 
 - [Contact us](https://bitgin.freshdesk.com/support/tickets/new)

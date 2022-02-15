@@ -76,7 +76,7 @@ The URL includes the following parameters:
     "address":"TXHzvoDBPaG7YbSgb3zdoosJK4x4Kmf2J2", 
     "chain":"Tron",
     "currency":"USDT", 
-    "amount":150 //optional
+    "amount":15.345 //optional
 }
 ```
 ##### Body Fields
@@ -87,7 +87,7 @@ The URL includes the following parameters:
 | address  | string | required | Specify the address you want to deposit |
 | chain    | string | required (Tron, Ethereum, Bitcoin...) | Specify valid chain |
 | currency | string | required (USDT, ETH, BTC...) | Specify the valid currency |
-| amount   | int | optional, Greater than 0 | Specify the amount |
+| amount   | float | optional, Greater than 0 | Specify the amount |
 
 
 > NOTE: `amount` is optional as `amount` can be provided by customer
@@ -416,7 +416,7 @@ The request includes the following parameters:
 | txid | string | required | Transaction ID is a string that identifies a specific transaction on the blockchain |
 | user_id | string | required, aquired from [Query API](#query-bitgin-addresses) | ID of BIGIN user|
 | addresses | string array | required | Specify BITGIN address corresponding to user_id|
-| amount | int | required |Amount of mine share for the address|
+| amount | float | required |Amount of mine share for the address|
 
 
 

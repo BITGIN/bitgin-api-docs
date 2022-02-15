@@ -3,11 +3,11 @@ package model
 import "time"
 
 type RequestBodyPay struct {
-	OrderID  *string `json:"order_id,omitempty"`
-	Amount   *int    `json:"amount,omitempty"`
-	Address  string  `json:"address"`
-	Chain    string  `json:"chain"`
-	Currency string  `json:"currency"`
+	OrderID  *string  `json:"order_id,omitempty"`
+	Amount   *float64 `json:"amount,omitempty"`
+	Address  string   `json:"address"`
+	Chain    string   `json:"chain"`
+	Currency string   `json:"currency"`
 }
 
 type ResponseBodyPay struct {
@@ -82,9 +82,9 @@ type MineShareReq struct {
 }
 
 type MineShareInfo struct {
-	UserID  string `json:"user_id"`
-	Address string `json:"address"`
-	Amount  int    `json:"amount"`
+	UserID  string  `json:"user_id"`
+	Address string  `json:"address"`
+	Amount  float64 `json:"amount"`
 }
 
 type ApiResponseMineShare struct {

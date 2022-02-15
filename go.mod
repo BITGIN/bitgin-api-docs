@@ -1,4 +1,4 @@
-module github.com/BITGIN/faas-api-docs
+module github.com/BITGIN/bitgin-api-docs
 
 go 1.17
 

@@ -1,23 +1,22 @@
 # Table of contents
-
-- [Get Started](#get-started)
 - [API Authentication](#api-authentication)
-- [Services](#services)
-  - [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend)
-  - [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend)
+
+- [Fiat-as-a-Service](#fiat-as-a-service)
+  - [Services](#services)
+    - [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend)
+    - [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend)
+
+- [Mine Share Service]()
+  - [REST API](#rest-api)
+    - [Query BITGIN Addresses](#query-bitgin-addresses)
+    - [Mine Share](#mine-share)
+
 - [Mock Server](#mock-server)
   - [How to compile](#how-to-compile)
   - [Setup configuration](#setup-configuration)
-  - [Services](#services)
-  
-
+  - [REST API of Mock Server](#rest-api-of-mock-server)
 	
-
-
-# Get Started
-
-
-### BITGIN Fiat-as-a-Service
+# Fiat-as-a-Service
 
 - The quickest way to build conversion-optimized cryptocurrency payment forms, hosted on BITGIN.
 
@@ -88,7 +87,7 @@ The URL includes the following parameters:
 | address  | string | required | Specify the address you want to deposit |
 | chain    | string | required (Tron, Ethereum, Bitcoin...) | Specify valid chain |
 | currency | string | required (USDT, ETH, BTC...) | Specify the valid currency |
-| amount   | string | optional, Greater than 0 | Specify the amount |
+| amount   | int | optional, Greater than 0 | Specify the amount |
 
 
 > NOTE: `amount` is optional as `amount` can be provided by customer
@@ -252,9 +251,211 @@ The response includes the following parameters:
 
 <br />
 
+# Mine Share Services
+
+### How to contact BITGIN ? 
+- support@bitgin.net
+### Try it now
+
+- Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.
+  - Step 1: Deploy the Mock Server
+  - Step 2: Call [Query BITGIN Addresses API](#query-bitgin-addresses) to get BITGIN addresses with user_id
+  - Step 3: Deposit total amount to the designated exclusive address and get the txid
+  - Step 4: Call [Mine Share API](#mine-share) to distribute the total amount to addresses that you specify
+
+##### [Back to top](#table-of-contents)
+
+
+# REST API
+## Query BITGIN Addresses
+
+
+##### Request
+
+**POST** `BITGIN_DOMAIN`/mine/v1/query
+
+
+
+##### Request Format
+
+An example of the request:
+
+###### API
+
+```
+/mine/v1/query
+```
+
+###### Post body
+
+
+```json
+
+{
+  "currency": "ETH",
+  "addresses": [
+    "0x14545e3C46aDf35673E2483c3EE957bdb5aF7311",
+    "0xE8e6ee727a74488631448e3624A0D80B11A431B0",
+    //...
+  ]
+}
+
+```
+
+The request includes the following parameters:
+
+###### Post body
+
+| Field | Type  | Note | Description |
+| :---  | :---  | :--- | :---        |
+| currency | string | required (ETH, USDT, Bitcoin...) | Specify currency type |
+| addresses | string array | required | Specify addresses you want to check are BITGIN addresses or not |
+
+##### Response Format
+
+An example of a successful response:
+	
+```json
+{
+    "success": true,
+    "data": {
+        "bitgin_addresses": [
+            {
+                "user_id": "351c0599-17b9-44ad-b10e-29f93b52863e",
+                "address": "0x14545e3C46aDf35673E2483c3EE957bdb5aF7311"
+            },
+            {
+                "user_id": "1f69e74f-f296-458b-bcfb-8e5ee3232969",
+                "address": "0xE8e6ee727a74488631448e3624A0D80B11A431B0"
+            }
+        ]
+    }
+}
+```
+	
+An example of a fail response:
+
+	
+```json
+{
+  "success": false,
+  "message": "invalid_request_format",
+  "request_id": "NP3RiuzpV6gytwiArOEeFX2C7ao745rJ"
+}
+```
+The response includes the following parameters:
+
+| Field | Type  | Description |
+| :---  | :---  | :---        |
+| success | bool | Success or not |
+| message | string | Error message |
+| [data](#data-format-for-query-bitgin-addresses) | JSON | Receipts data |
+| request_id | string | Request id For Debug  |
+
+##### Data Format For Query BITGIN Addresses
+
+The response includes the following parameters:
+
+| Field | Type  | Description |
+| :---  | :---  | :---        |
+| user_id | string |  ID of BIGIN user|
+| address | string |  Address of BITGIN user|
+
+##### [Back to top](#table-of-contents)
+<br />
+
+## Mine Share
+
+
+##### Request
+
+**POST** `BITGIN_DOMAIN`/mine/v1/share
+
+
+
+##### Request Format
+
+An example of the request:
+
+###### API
+
+```
+/mine/v1/share
+```
+
+###### Post body
+
+
+```json
+
+{
+  "txid": "0xe3e06dfefd94e7ea3b267445505369695531ce00c4c14b165d0d7c4b586dc181",
+  "share": [
+    {
+      "user_id": "351c0599-17b9-44ad-b10e-29f93b52863e",
+      "address": "0x14545e3C46aDf35673E2483c3EE957bdb5aF7311",
+      "amount": 2.345
+    },
+    {
+      "user_id": "1f69e74f-f296-458b-bcfb-8e5ee3232969",
+      "address": "0xE8e6ee727a74488631448e3624A0D80B11A431B0",
+      "amount": 1.56
+    },
+    //...
+  ]
+}
+
+```
+
+The request includes the following parameters:
+
+###### Post body
+
+| Field | Type  | Note | Description |
+| :---  | :---  | :--- | :---        |
+| txid | string | required | Transaction ID is a string that identifies a specific transaction on the blockchain |
+| user_id | string | required, aquired from [Query API](#query-bitgin-addresses) | ID of BIGIN user|
+| addresses | string array | required | Specify BITGIN address corresponding to user_id|
+| amount | int | required |Amount of mine share for the address|
+
+
+
+##### Response Format
+
+An example of a successful response:
+	
+```json
+{
+    "success": true,
+}
+```
+	
+An example of a fail response:
+
+	
+```json
+{
+  "success": false,
+  "message": "invalid_request_format",
+  "request_id": "NP3RiuzpV6gytwiArOEeFX2C7ao745rJ"
+}
+```
+The response includes the following parameters:
+
+| Field | Type  | Description |
+| :---  | :---  | :---        |
+| success | bool | Success or not |
+| message | string | Error message |
+| request_id | string | Request id For Debug  |
+
+##### [Back to top](#table-of-contents)
+
+
+<br />
+
 # Mock Server
 
-### How to compile
+## How to compile
 
 - Clone project
 ```
@@ -269,7 +470,7 @@ $ git clone https://github.com/BITGIN/faas-api-docs.git
 $ go run main.go
 ```
 
-### Setup configuration
+## Setup configuration
 
 >	NOTE: Configure in main.go
 ```go
@@ -279,23 +480,43 @@ key               = "<API_KEY>"  // API_KEY acquired from BITGIN
 secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 ```
 
-### Services
+## REST API of Mock Server
 
+### Fiat-as-a-Service
 - FaaS Payment Through BITGIN Frontend
 ##### POST Method
 ```
-/bitgin-pay-url
+/faas/v1/pay
 ```
 ##### Post Body
 [Request Body](#faas-payment-through-bitgin-frontend)
 
-<br />
 
 - FaaS Get Receipt From BITGIN Backend
 ##### POST Method
 ```
-/bitgin-receipt
+/faas/v1/receipt
 ```
 
 ##### Post Body
 [Request Body](#faas-get-receipt-from-bitgin-backend)
+
+<br />
+
+### Mine Share Service
+
+- Query BITGIN Addresses
+##### POST Method
+```
+/mine/v1/query
+```
+##### Post Body
+[Request Body](#query-bitgin-addresses)
+
+- Mine Share
+##### POST Method
+```
+/mine/v1/share
+```
+##### Post Body
+[Request Body](#mine-share)

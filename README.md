@@ -257,7 +257,7 @@ The response includes the following parameters:
 - [Contact us](https://bitgin.freshdesk.com/support/tickets/new)
 ### Try it now
 
-- Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.
+- Use [Mock Server](#mock-server) to test BITGIN Mine Share Service right away.
   - Step 1: Deploy the Mock Server
   - Step 2: Call [Query BITGIN Addresses API](#query-bitgin-addresses) to get BITGIN addresses with user_id
   - Step 3: Deposit total amount to the designated exclusive address and get the txid

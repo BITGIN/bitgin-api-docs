@@ -37,9 +37,9 @@
 ### Try it now
 - Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.
   - Step 1: Deploy the Mock Server
-  - Step 2: Call `MOCK_SERVER_DOMAIN/bitgin-pay-url` to get BITGIN Frontend URL
+  - Step 2: Call [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend) to get BITGIN Frontend URL
   - Step 3: Open the URL then complete payment
-  - Step 4: Call `MOCK_SERVER_DOMAIN/bitgin-receipt` to acquire payment receipts
+  - Step 4: Call [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend) to acquire payment receipts
 
 ##### [Back to top](#table-of-contents)
 
@@ -66,6 +66,10 @@ The URL includes the following parameters:
 | NONCE | represented by milliseconds |  Unix time of current time, the number of `milliseconds` elapsed since January 1, 1970 UTC |
 | [Body](#body-format) | base64 encoding as specified by RFC 4648 | Specify the base64 encoded payment information |
 
+##### Headers
+| Key | Value | Note |
+| :---  | :--- | :---        |
+| Content-Type | application/json | required, JSON Type |
 
 
 ##### Body Format
@@ -90,8 +94,10 @@ The URL includes the following parameters:
 | amount   | float | optional, Greater than 0 | Specify the amount |
 
 
-> NOTE: `amount` is optional as `amount` can be provided by customer
+> NOTE: `amount` is optional as it can be provided by customer
 > 
+> NOTE: `chain` and `currency` are case-sensitive
+
 
 ##### Response Format
 
@@ -132,6 +138,10 @@ An example of the request:
 /faas/v1/receipts
 ```
 
+##### Headers
+| Key | Value | Note |
+| :---  | :--- | :---        |
+| Content-Type | application/json | required, JSON Type |
 ###### Post body
 
 ```json
@@ -167,6 +177,8 @@ The request includes the following parameters:
 > NOTE: The query max limt is 500.
 > 
 > NOTE: `start_date` and `end_date` are Unix time, the number of seconds elapsed since January 1, 1970 UTC.
+>
+> NOTE: `currency` is case-sensitive
 
 <br />
 
@@ -274,8 +286,6 @@ The response includes the following parameters:
 
 **POST** `BITGIN_DOMAIN`/mine/v1/query
 
-
-
 ##### Request Format
 
 An example of the request:
@@ -285,7 +295,10 @@ An example of the request:
 ```
 /mine/v1/query
 ```
-
+##### Headers
+| Key | Value | Note |
+| :---  | :--- | :---        |
+| Content-Type | application/json | required, JSON Type |
 ###### Post body
 
 
@@ -382,6 +395,11 @@ An example of the request:
 ```
 /mine/v1/share
 ```
+
+##### Headers
+| Key | Value | Note |
+| :---  | :--- | :---        |
+| Content-Type | application/json | required, JSON Type |
 
 ###### Post body
 
@@ -483,41 +501,37 @@ Secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 
 ## REST API of Mock Server
 
-### Fiat-as-a-Service
-- FaaS Payment Through BITGIN Frontend
-##### POST Method
+- ## Fiat-as-a-Service
+### FaaS Payment Through BITGIN Frontend
 ```
-/faas/v1/pay
-```
-##### Post Body
-[Request Body](#faas-payment-through-bitgin-frontend)
-
-
-- FaaS Get Receipt From BITGIN Backend
-##### POST Method
-```
-/faas/v1/receipt
+http://localhost:8888/faas/v1/pay
 ```
 
-##### Post Body
-[Request Body](#faas-get-receipt-from-bitgin-backend)
+[API definition](#faas-payment-through-bitgin-frontend)
+
+
+### FaaS Get Receipt From BITGIN Backend
+
+```
+http://localhost:8888/faas/v1/receipt
+```
+
+[API definition](#faas-get-receipt-from-bitgin-backend)
 
 <br />
 
-### Mine Share Service
+- ## Mine Share Service
 
-- Query BITGIN Addresses
-##### POST Method
-```
-/mine/v1/query
-```
-##### Post Body
-[Request Body](#query-bitgin-addresses)
+### Query BITGIN Addresses
 
-- Mine Share
-##### POST Method
 ```
-/mine/v1/share
+http://localhost:8888/mine/v1/query
 ```
-##### Post Body
-[Request Body](#mine-share)
+
+[API definition](#query-bitgin-addresses)
+
+### Mine Share
+```
+http://localhost:8888/mine/v1/share
+```
+[API definition](#mine-share)

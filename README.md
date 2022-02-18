@@ -260,16 +260,6 @@ The response includes the following parameters:
 | is_deduction | boolean | |
 
 
-"authorization_error"
-"invalid_request_format"
-"invalid_withdrawal_value"
-"unknown_error"
-"unexpected_error"
-"invalid_chain_type"
-"invalid_currency_type"
-"invalid_api_request"
-"permission_denied"
-
 ##### Error Code
 
 | HTTP Code | Error | Description |

@@ -259,6 +259,30 @@ The response includes the following parameters:
 | tx_id | string | Transaction ID is a string that identifies a specific transaction on the blockchain|
 | is_deduction | boolean | |
 
+
+"authorization_error"
+"invalid_request_format"
+"invalid_withdrawal_value"
+"unknown_error"
+"unexpected_error"
+"invalid_chain_type"
+"invalid_currency_type"
+"invalid_api_request"
+"permission_denied"
+
+##### Error Code
+
+| HTTP Code | Error | Description |
+| :---      | :---  | :---        |
+| 400  | invalid_api_request| Invalid request headers |
+| 400  | invalid_request_format| Invalid request body |
+| 401  | api_key_user_id_not_exist| API KEY not exist |
+| 403  | permission_denied | No permission to call the API |
+| 500  | unknown_error| Unkown error, please [Contact Us](https://bitgin.freshdesk.com/support/tickets/new) |
+| 500  | unexpected_error| Unexpected error, please [Contact Us](https://bitgin.freshdesk.com/support/tickets/new) |
+
+
+
 ##### [Back to top](#table-of-contents)
 
 <br />

@@ -450,7 +450,8 @@ The request includes the following parameters:
 | addresses | string array | required | Specify BITGIN address corresponding to user_id|
 | amount | float | required |Amount of mine share for the address|
 
-
+> NOTE: The sum of amount must be the same as the txid amount.
+>
 
 ##### Response Format
 

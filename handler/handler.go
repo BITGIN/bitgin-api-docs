@@ -38,7 +38,7 @@ func FaasPayHandler(c echo.Context) error {
 	data, _ := json.Marshal(&body)
 
 	method := strings.ToUpper(http.MethodPost)
-	path := "/faas/v1/pay"
+	path := "/v1/faas/pay"
 	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
 
 	payload := nonce + method + path + string(data)
@@ -73,7 +73,7 @@ func FaasReceiptHandler(c echo.Context) error {
 	data, _ := json.Marshal(body)
 
 	method := strings.ToUpper(http.MethodPost)
-	path := "/faas/v1/receipt"
+	path := "/v1/faas/receipt"
 	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
 
 	payload := nonce + method + path + string(data)
@@ -133,7 +133,7 @@ func MineQueryAddressesHandler(c echo.Context) error {
 	data, _ := json.Marshal(body)
 
 	method := strings.ToUpper(http.MethodPost)
-	path := "/mine/v1/query"
+	path := "/v1/mine/query"
 	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
 
 	payload := nonce + method + path + string(data)
@@ -193,7 +193,7 @@ func MineShareHandler(c echo.Context) error {
 	data, _ := json.Marshal(body)
 
 	method := strings.ToUpper(http.MethodPost)
-	path := "/mine/v1/share"
+	path := "/v1/mine/share"
 	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
 
 	payload := nonce + method + path + string(data)

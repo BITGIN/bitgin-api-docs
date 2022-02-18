@@ -8,13 +8,13 @@ import (
 func main() {
 	e := echo.New()
 
-	e.POST("/faas/v1/pay", handler.FaasPayHandler)
+	e.POST("/v1/faas/pay", handler.FaasPayHandler)
 
-	e.POST("/faas/v1/receipt", handler.FaasReceiptHandler)
+	e.POST("/v1/faas/receipt", handler.FaasReceiptHandler)
 
-	e.POST("/mine/v1/query", handler.MineQueryAddressesHandler)
+	e.POST("/v1/mine/query", handler.MineQueryAddressesHandler)
 
-	e.POST("/mine/v1/share", handler.MineShareHandler)
+	e.POST("/v1/mine/share", handler.MineShareHandler)
 
 	e.Logger.Fatal(e.Start(":8888"))
 }

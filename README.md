@@ -135,7 +135,7 @@ An example of the request:
 ###### API
 
 ```
-/faas/v1/receipts
+/v1/faas/receipts
 ```
 
 ##### Headers
@@ -288,7 +288,8 @@ The response includes the following parameters:
   - Step 2: Call [Query BITGIN Addresses API](#query-bitgin-addresses) to get BITGIN addresses with user_id
   - Step 3: Deposit total amount to the designated exclusive address and get the txid
   - Step 4: Call [Mine Share API](#mine-share) to distribute the total amount to addresses that you specify
-
+> NOTE:  Step 3 and Step 4
+>
 ##### [Back to top](#table-of-contents)
 
 
@@ -307,7 +308,7 @@ An example of the request:
 ###### API
 
 ```
-/mine/v1/query
+/v1/mine/query
 ```
 ##### Headers
 | Key | Value | Note |
@@ -407,7 +408,7 @@ An example of the request:
 ###### API
 
 ```
-/mine/v1/share
+/v1/mine/share
 ```
 
 ##### Headers
@@ -519,7 +520,7 @@ Secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 - ## Fiat-as-a-Service
 ### FaaS Payment Through BITGIN Frontend
 ```
-http://localhost:8888/faas/v1/pay
+http://localhost:8888/v1/faas/pay
 ```
 
 [API definition](#faas-payment-through-bitgin-frontend)
@@ -528,7 +529,7 @@ http://localhost:8888/faas/v1/pay
 ### FaaS Get Receipt From BITGIN Backend
 
 ```
-http://localhost:8888/faas/v1/receipt
+http://localhost:8888/v1/faas/receipt
 ```
 
 [API definition](#faas-get-receipt-from-bitgin-backend)
@@ -540,14 +541,14 @@ http://localhost:8888/faas/v1/receipt
 ### Query BITGIN Addresses
 
 ```
-http://localhost:8888/mine/v1/query
+http://localhost:8888/v1/mine/query
 ```
 
 [API definition](#query-bitgin-addresses)
 
 ### Mine Share
 ```
-http://localhost:8888/mine/v1/share
+http://localhost:8888/v1/mine/share
 ```
 [API definition](#mine-share)
 

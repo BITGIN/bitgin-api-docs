@@ -288,7 +288,7 @@ The response includes the following parameters:
   - Step 2: Call [Query BITGIN Addresses API](#query-bitgin-addresses) to get BITGIN addresses with user_id
   - Step 3: Deposit total amount to the designated exclusive address and get the txid
   - Step 4: Call [Mine Share API](#mine-share) to distribute the total amount to addresses that you specify
-> NOTE:  Step 3 and Step 4
+> NOTE: After confirmed that the transaction in Step 3 is completed, you need to wait a few minutes (recommend 10 miniutes) to enter Step 4 until BITGIN receive your deposit Information from our pool address, otherwise you will receive `txid_not_found` error
 >
 ##### [Back to top](#table-of-contents)
 

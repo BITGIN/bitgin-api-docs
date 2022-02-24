@@ -135,7 +135,7 @@ An example of the request:
 ###### API
 
 ```
-/v1/faas/receipts
+/v1/faas/receipt
 ```
 
 ##### Headers

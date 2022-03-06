@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -28,6 +29,14 @@ func sign(payload string) string {
 	return signature
 }
 
+func randFunc() string {
+	rand.Seed(time.Now().Unix())
+	// 2^32 - 1
+	x := rand.Int63n(4294967295)
+	fmt.Printf("%08x | %d", x, x)
+	return fmt.Sprintf("%08x", x)
+}
+
 func FaasPayHandler(c echo.Context) error {
 	body := model.RequestBodyPay{}
 	if err := c.Bind(&body); err != nil {
@@ -39,9 +48,10 @@ func FaasPayHandler(c echo.Context) error {
 
 	method := strings.ToUpper(http.MethodPost)
 	path := "/v1/faas/pay"
-	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
+	nonce := randFunc()
 
-	payload := nonce + method + path + string(data)
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
@@ -52,6 +62,7 @@ func FaasPayHandler(c echo.Context) error {
 	q.Add("key", config.Key)
 	q.Add("sign", signature)
 	q.Add("nonce", nonce)
+	q.Add("timestamp", timestamp)
 	q.Add("body", base64.RawURLEncoding.EncodeToString(data))
 	u.RawQuery = q.Encode()
 
@@ -74,15 +85,16 @@ func FaasReceiptHandler(c echo.Context) error {
 
 	method := strings.ToUpper(http.MethodPost)
 	path := "/v1/faas/receipt"
-	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
+	nonce := randFunc()
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := nonce + method + path + string(data)
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
 	fmt.Println("signature: ", signature)
 
-	log.Printf("key:%s&sign:%s&nonce:%s", config.Key, signature, nonce)
+	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
 	req, err := http.NewRequest("POST", config.Backend_Endpoint+path, bytes.NewBuffer(data))
 	if err != nil {
@@ -90,10 +102,11 @@ func FaasReceiptHandler(c echo.Context) error {
 	}
 
 	reqHeader := map[string]string{
-		"BG-API-KEY":   config.Key,
-		"BG-API-SIGN":  signature,
-		"BG-API-NONCE": nonce,
-		"Content-Type": "application/json; charset=UTF-8",
+		"BG-API-KEY":       config.Key,
+		"BG-API-SIGN":      signature,
+		"BG-API-NONCE":     nonce,
+		"BG-API-TIMESTAMP": timestamp,
+		"Content-Type":     "application/json; charset=UTF-8",
 	}
 
 	for k, v := range reqHeader {
@@ -134,15 +147,17 @@ func MineQueryAddressesHandler(c echo.Context) error {
 
 	method := strings.ToUpper(http.MethodPost)
 	path := "/v1/mine/query"
-	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
+	nonce := randFunc()
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := nonce + method + path + string(data)
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
 	fmt.Println("signature: ", signature)
 
-	log.Printf("key:%s&sign:%s&nonce:%s", config.Key, signature, nonce)
+	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
 	req, err := http.NewRequest("POST", config.Backend_Endpoint+path, bytes.NewBuffer(data))
 	if err != nil {
@@ -150,10 +165,11 @@ func MineQueryAddressesHandler(c echo.Context) error {
 	}
 
 	reqHeader := map[string]string{
-		"BG-API-KEY":   config.Key,
-		"BG-API-SIGN":  signature,
-		"BG-API-NONCE": nonce,
-		"Content-Type": "application/json; charset=UTF-8",
+		"BG-API-KEY":       config.Key,
+		"BG-API-SIGN":      signature,
+		"BG-API-NONCE":     nonce,
+		"BG-API-TIMESTAMP": timestamp,
+		"Content-Type":     "application/json; charset=UTF-8",
 	}
 
 	for k, v := range reqHeader {
@@ -194,15 +210,16 @@ func MineShareHandler(c echo.Context) error {
 
 	method := strings.ToUpper(http.MethodPost)
 	path := "/v1/mine/share"
-	nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
+	nonce := randFunc()
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := nonce + method + path + string(data)
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
 	fmt.Println("signature: ", signature)
 
-	log.Printf("key:%s&sign:%s&nonce:%s", config.Key, signature, nonce)
+	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
 	req, err := http.NewRequest("POST", config.Backend_Endpoint+path, bytes.NewBuffer(data))
 	if err != nil {
@@ -210,10 +227,11 @@ func MineShareHandler(c echo.Context) error {
 	}
 
 	reqHeader := map[string]string{
-		"BG-API-KEY":   config.Key,
-		"BG-API-SIGN":  signature,
-		"BG-API-NONCE": nonce,
-		"Content-Type": "application/json; charset=UTF-8",
+		"BG-API-KEY":       config.Key,
+		"BG-API-SIGN":      signature,
+		"BG-API-NONCE":     nonce,
+		"BG-API-TIMESTAMP": timestamp,
+		"Content-Type":     "application/json; charset=UTF-8",
 	}
 
 	for k, v := range reqHeader {

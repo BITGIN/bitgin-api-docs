@@ -19,7 +19,7 @@
 
 # API Authentication
 - The first things you need to use the FaaS is your API key and your secret key.
-- You can use API key and secret key to generate the necessary parameters that contain  `SIGN` , `KEY` , `NONCE`
+- You can use API key and secret key to generate the necessary parameters that contain  `SIGN` , `KEY` , `NONCE`, `TIMESTAMP`
 
 ### How to sign your data ?
 - Please refer to the code snippet on the github project to know how to sign your data.
@@ -51,7 +51,7 @@
 
 **URL** 
 
-https://`BITGIN_DOMAIN`/fiat-as-a-service?sign=`SIGN`&key=`KEY`&nonce=`NONCE`&body=`BODY`
+https://`BITGIN_DOMAIN`/fiat-as-a-service?sign=`SIGN`&key=`KEY`&nonce=`NONCE`&timestamp=`TIMESTAMP`&body=`BODY`
 
 <br />
 
@@ -61,10 +61,16 @@ The URL includes the following parameters:
 
 | Field | Note | Description |
 | :---  | :--- | :---        |
-| SIGN | acquired from BITGIN | Which is the SHA256 HMAC of the following four strings, using your API secret, as a hex string: Request timestamp (same as above), HTTP method in uppercase (e.g. GET or POST), Request path, including leading slash and any URL parameters but not including the hostname|
+| SIGN | [How to sign your data ?](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)  | Which is the SHA256 HMAC of the following four strings, using your API secret, as a hex string: Request timestamp (same as above), HTTP method in uppercase (e.g. GET or POST), Request path, including leading slash and any URL parameters but not including the hostname|
 | KEY  | acquired from BITGIN | The key string for BITGIN verification merchant |
-| NONCE | represented by milliseconds |  Unix time of current time, the number of `milliseconds` elapsed since January 1, 1970 UTC |
+| NONCE | random number [0, 2^32 - 1) |  base 16, with lower-case letters for a-f, width 8 |
+| TIMESTAMP | represented by seconds |  Unix time of current time, the number of `seconds` elapsed since January 1, 1970 UTC |
 | [Body](#body-format) | base64 encoding as specified by RFC 4648 | Specify the base64 encoded payment information |
+
+
+> NOTE: The quickest way to get the url is using the [Mock Server](#mock-server) and call the `v1/faas/pay` API with the following header and body.
+> 
+
 
 ##### Headers
 | Key | Value | Note |
@@ -105,7 +111,7 @@ An example of a successful response:
 
 ```json
 {
-  "url": "https://bitgin.net/fiat-as-a-service?sign=<sign>&key=<key>&nonce=<nonce>&body=<body>"
+  "url": "https://stage.bitgin.app/fiat-as-a-service?body=eyJvcmRlcl9pZCI6IjAwMDAxXzEiLCJhbW91bnQiOjE1LjM0NSwiYWRkcmVzcyI6IlRYSHp2b0RCUGFHN1liU2diM3pkb29zSks0eDRLbWYySjIiLCJjaGFpbiI6IlRyb24iLCJjdXJyZW5jeSI6IlVTRFQifQ&key=6OOphiLielvNYLmXL8Pj&nonce=9657a548&sign=c65efa5d1c711d4227e59f56298a85829b696bc777bd45e6b49a347faa5b7467&timestamp=1646546374"
 }
 ```
 
@@ -113,7 +119,7 @@ The response includes the following parameters:
 
 | Field | Type  | Description |
 | :---  | :---  | :---        |
-| url | string |  URL is the payment site provided by BITGIN|
+| [url](#faas-payment-through-bitgin-frontend) | string |  URL is the payment site provided by BITGIN|
 
 ##### [Back to top](#table-of-contents)
 
@@ -336,7 +342,7 @@ The request includes the following parameters:
 
 | Field | Type  | Note | Description |
 | :---  | :---  | :--- | :---        |
-| currency | string | required (ETH, USDT, Bitcoin...) | Specify currency type |
+| currency | string | required (ETH, TRX, Bitcoin...) | Specify currency type |
 | addresses | string array | required | Specify addresses you want to check are BITGIN addresses or not |
 
 ##### Response Format

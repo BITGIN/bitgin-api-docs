@@ -24,6 +24,36 @@
 ### How to sign your data ?
 - Please refer to the code snippet on the github project to know how to sign your data.
 	- [Go](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)
+```go
+func sign(payload string) string {
+	hash := hmac.New(sha256.New, []byte(config.Secret))
+	hash.Write([]byte(payload))
+	signature := hex.EncodeToString(hash.Sum(nil))
+	return signature
+}
+
+func randFunc() string {
+	rand.Seed(time.Now().Unix())
+	// 2^32 - 1
+	x := rand.Int63n(4294967295)
+	fmt.Printf("%08x | %d", x, x)
+	return fmt.Sprintf("%08x", x)
+}
+
+func main() {
+	method := http.MethodPost
+	path := "/v1/faas/pay"
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
+	nonce := randFunc()
+
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+	fmt.Println("payload: ", payload)
+
+	signature := sign(payload)
+	fmt.Println("signature: ", signature)
+}
+
+```
 
 ##### [Back to top](#table-of-contents)
 # Fiat-as-a-Service

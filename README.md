@@ -34,8 +34,8 @@ func sign(payload string) string {
 
 func randFunc() string {
 	rand.Seed(time.Now().Unix())
-	// 2^32 - 1
-	x := rand.Int63n(4294967295)
+	// 2^32 
+	x := rand.Int63n(4294967296)
 	fmt.Printf("%08x | %d", x, x)
 	return fmt.Sprintf("%08x", x)
 }
@@ -93,7 +93,7 @@ The URL includes the following parameters:
 | :---  | :--- | :---        |
 | SIGN | [How to sign your data ?](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)  | Which is the SHA256 HMAC of the following four strings, using your API secret, as a hex string: Request timestamp (same as above), HTTP method in uppercase (e.g. GET or POST), Request path, including leading slash and any URL parameters but not including the hostname|
 | KEY  | acquired from BITGIN | The key string for BITGIN verification merchant |
-| NONCE | random number [0, 2^32 - 1) |  base 16, with lower-case letters for a-f, width 8 |
+| NONCE | random number [0, 2^32) | random number in the half-open interval [0,2^32-1) with hexadecimal system |
 | TIMESTAMP | represented by seconds |  Unix time of current time, the number of `seconds` elapsed since January 1, 1970 UTC |
 | [Body](#body-format) | base64 encoding as specified by RFC 4648 | Specify the base64 encoded payment information |
 

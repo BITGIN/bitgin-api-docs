@@ -2,12 +2,12 @@
 - [API Authentication](#api-authentication)
 
 - [Fiat-as-a-Service](#fiat-as-a-service)
-  - [Services](#services)
-    - [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend)
-    - [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend)
+  - REST API
+    - [Get Payment Embedded URL](#get-payment-embedded-url)
+    - [Get Receipts](#get-receipts)
 
 - [Mine Share Service](#mine-share-service)
-  - [REST API](#rest-api)
+  - REST API
     - [Query BITGIN Addresses](#query-bitgin-addresses)
     - [Mine Share](#mine-share)
 
@@ -75,32 +75,13 @@ func main() {
 
 
 
-# Services
+# REST API
 
-## FaaS Payment Through BITGIN Frontend
+## Get Payment Embedded URL
 
-**URL** 
+##### Request
 
-https://`BITGIN_DOMAIN`/fiat-as-a-service?sign=`SIGN`&key=`KEY`&nonce=`NONCE`&timestamp=`TIMESTAMP`&body=`BODY`
-
-<br />
-
-The URL includes the following parameters:
-
-##### URL Parameters
-
-| Field | Note | Description |
-| :---  | :--- | :---        |
-| SIGN | [How to sign your data ?](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)  | Which is the SHA256 HMAC of the following four strings, using your API secret, as a hex string: Request timestamp (same as above), HTTP method in uppercase (e.g. GET or POST), Request path, including leading slash and any URL parameters but not including the hostname|
-| KEY  | acquired from BITGIN | The key string for BITGIN verification merchant |
-| NONCE | random number [0, 2^32) | random number in the half-open interval [0,2^32) with hexadecimal system |
-| TIMESTAMP | represented by seconds |  Unix time of current time, the number of `seconds` elapsed since January 1, 1970 UTC |
-| [Body](#body-format) | base64 encoding as specified by RFC 4648 | Specify the base64 encoded payment information |
-
-
-> NOTE: The quickest way to get the url is using the [Mock Server](#mock-server) and call the `v1/faas/pay` API with the following header and body.
-> 
-
+**POST** /v1/faas/pay
 
 ##### Headers
 | Key | Value | Note |
@@ -108,7 +89,7 @@ The URL includes the following parameters:
 | Content-Type | application/json | required, JSON Type |
 
 
-##### Body Format
+##### Request
 
 ```json
 {
@@ -149,30 +130,37 @@ The response includes the following parameters:
 
 | Field | Type  | Description |
 | :---  | :---  | :---        |
-| [url](#faas-payment-through-bitgin-frontend) | string |  URL is the payment site provided by BITGIN|
+| [url](#url-parameters) | string |  URL is the payment site provided by BITGIN|
 
+</br>
+
+**URL** 
+
+https://`BITGIN_DOMAIN`/fiat-as-a-service?sign=`SIGN`&key=`KEY`&nonce=`NONCE`&timestamp=`TIMESTAMP`&body=`BODY`
+
+The URL includes the following parameters:
+
+##### URL Parameters
+
+| Field | Note | Description |
+| :---  | :--- | :---        |
+| SIGN | [How to sign your data ?](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)  | Which is the SHA256 HMAC of the following four strings, using your API secret, as a hex string: Request timestamp (same as above), HTTP method in uppercase (e.g. GET or POST), Request path, including leading slash and any URL parameters but not including the hostname|
+| KEY  | acquired from BITGIN | The key string for BITGIN verification merchant |
+| NONCE | random number [0, 2^32) | random number in the half-open interval [0,2^32) with hexadecimal system |
+| TIMESTAMP | represented by seconds |  Unix time of current time, the number of `seconds` elapsed since January 1, 1970 UTC |
+| [Body](#body-format) | base64 encoding as specified by RFC 4648 | Specify the base64 encoded payment information |
 ##### [Back to top](#table-of-contents)
 
 
 <br />
 
-## FaaS Get Receipt From BITGIN Backend
+## Get Receipts
 
 Get payment receipts 
 
-##### Request Method
+##### Request 
 
-**POST** 
-
-##### Request Format
-
-An example of the request:
-
-###### API
-
-```
-/v1/faas/receipt
-```
+**POST** /v1/faas/receipt
 
 ##### Headers
 | Key | Value | Note |
@@ -335,17 +323,8 @@ The response includes the following parameters:
 
 ##### Request
 
-**POST** `BITGIN_DOMAIN`/mine/v1/query
+**POST** /mine/v1/query
 
-##### Request Format
-
-An example of the request:
-
-###### API
-
-```
-/v1/mine/query
-```
 ##### Headers
 | Key | Value | Note |
 | :---  | :--- | :---        |
@@ -433,19 +412,7 @@ The response includes the following parameters:
 
 ##### Request
 
-**POST** `BITGIN_DOMAIN`/mine/v1/share
-
-
-
-##### Request Format
-
-An example of the request:
-
-###### API
-
-```
-/v1/mine/share
-```
+**POST** /mine/v1/share
 
 ##### Headers
 | Key | Value | Note |

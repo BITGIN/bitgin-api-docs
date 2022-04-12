@@ -81,7 +81,9 @@ func main() {
 
 ##### Request
 
-**POST** /v1/faas/pay
+**POST** `MOCK_SERVER_DOMAIN`/v1/faas/pay
+
+> NOTE: The API is a tool to help you generate the embedded url that only implements in the [mock server](#mock-server), so it does not allow you to send request to BITGIN Server.
 
 ##### Headers
 | Key | Value | Note |

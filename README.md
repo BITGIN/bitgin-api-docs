@@ -288,8 +288,8 @@ The response includes the following parameters:
 | completed_at | string |  CompletedTime of payment|
 | amount | string |  Amount of payment|
 | fee | string |  Fee of paymemt|
-| currency | string | Currency of payment (USDT, ETH, Bitcoin...)|
-| fee_currency | string | Currency of fee of payment (USDT, ETH, Bitcoin...)|
+| currency | string | Currency of payment (USDT, ETH, BTC...)|
+| fee_currency | string | Currency of fee of payment (USDT, ETH, BTC...)|
 | address | string |  Deposit address of payment|
 | chain | string |  Chain of payment (Tron, Ethereum, Bitcoin...)|
 | tx_id | string | Transaction ID is a string that identifies a specific transaction on the blockchain|
@@ -335,7 +335,7 @@ The response includes the following parameters:
 
 ##### Request
 
-**POST** `BITGIN_DOMAIN`/mine/v1/query
+**POST** `BITGIN_DOMAIN`/v1/mine/query
 
 ##### Request Format
 
@@ -372,7 +372,7 @@ The request includes the following parameters:
 
 | Field | Type  | Note | Description |
 | :---  | :---  | :--- | :---        |
-| currency | string | required (ETH, TRX, Bitcoin...) | Specify currency type |
+| currency | string | required (ETH, TRX, BTC...) | Specify currency type |
 | addresses | string array | required | Specify addresses you want to check are BITGIN addresses or not |
 
 ##### Response Format
@@ -433,7 +433,7 @@ The response includes the following parameters:
 
 ##### Request
 
-**POST** `BITGIN_DOMAIN`/mine/v1/share
+**POST** `BITGIN_DOMAIN`/v1/mine/share
 
 
 

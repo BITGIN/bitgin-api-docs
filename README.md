@@ -523,21 +523,21 @@ Secret            = "<SECRET_KEY>" // SECRET_KEY acquired from BITGIN
 ## REST API of Mock Server
 
 - ## Fiat-as-a-Service
-### FaaS Payment Through BITGIN Frontend
+### Get Payment Embedded URL
 ```
 http://localhost:8888/v1/faas/pay
 ```
 
-[API definition](#faas-payment-through-bitgin-frontend)
+[API definition](#get-payment-embedded-url)
 
 
-### FaaS Get Receipt From BITGIN Backend
+### Get Receipts
 
 ```
 http://localhost:8888/v1/faas/receipt
 ```
 
-[API definition](#faas-get-receipt-from-bitgin-backend)
+[API definition](#get-receipts)
 
 <br />
 

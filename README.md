@@ -416,18 +416,6 @@ The response includes the following parameters:
 
 **POST** /v1/mine/share
 
-
-
-##### Request Format
-
-An example of the request:
-
-###### API
-
-```
-/v1/mine/share
-```
-
 ##### Headers
 | Key | Value | Note |
 | :---  | :--- | :---        |

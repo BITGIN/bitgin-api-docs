@@ -48,7 +48,7 @@ func main() {
   if err != nil {
     return c.String(http.StatusInternalServerError, err.Error())
   }
-    
+
   dataStr := string(data)
   dataStr = strings.ReplaceAll(dataStr, " ", "")
   dataStr = strings.ReplaceAll(dataStr, "\n", "")
@@ -56,7 +56,7 @@ func main() {
   
   
   method := http.MethodPost
-	path := "/v1/faas/pay"
+	path := "/v1/faas/receipts"
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	nonce := randFunc()
 

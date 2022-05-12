@@ -56,15 +56,15 @@ func main() {
   
   
   method := http.MethodPost
-	path := "/v1/faas/receipts"
-	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
-	nonce := randFunc()
-
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
-	fmt.Println("payload: ", payload)
-
-	signature := sign(payload)
-	fmt.Println("signature: ", signature)
+  path := "/v1/faas/receipts"
+  timestamp := strconv.FormatInt(time.Now().Unix(), 10)
+  nonce := randFunc()
+  
+  payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
+  fmt.Println("payload: ", payload)
+  
+  signature := sign(payload)
+  fmt.Println("signature: ", signature)
 }
 
 ```

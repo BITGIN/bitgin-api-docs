@@ -46,12 +46,17 @@ func FaasPayHandler(c echo.Context) error {
 
 	data, _ := json.Marshal(&body)
 
-	method := strings.ToUpper(http.MethodPost)
+	dataStr := string(data)
+	dataStr = strings.ReplaceAll(dataStr, " ", "")
+	dataStr = strings.ReplaceAll(dataStr, "\n", "")
+	dataStr = strings.ReplaceAll(dataStr, "\t", "")
+
+	method := http.MethodPost
 	path := "/v1/faas/pay"
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	nonce := randFunc()
 
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
@@ -81,14 +86,29 @@ func FaasReceiptHandler(c echo.Context) error {
 		log.Println("error: ", err.Error())
 		return c.String(http.StatusBadRequest, err.Error())
 	}
-	data, _ := json.Marshal(body)
 
-	method := strings.ToUpper(http.MethodPost)
+	var dataBytes []byte
+	var dataStr string
+	if c.Request().Body != nil {
+		data, err := ioutil.ReadAll(c.Request().Body)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+		dataBytes = data
+
+		c.Request().Body = ioutil.NopCloser(bytes.NewReader(data))
+		dataStr = string(data)
+		dataStr = strings.ReplaceAll(dataStr, " ", "")
+		dataStr = strings.ReplaceAll(dataStr, "\n", "")
+		dataStr = strings.ReplaceAll(dataStr, "\t", "")
+	}
+
+	method := http.MethodGet
 	path := "/v1/faas/receipt"
 	nonce := randFunc()
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
@@ -96,7 +116,7 @@ func FaasReceiptHandler(c echo.Context) error {
 
 	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
-	req, err := http.NewRequest("POST", config.Backend_Endpoint+path, bytes.NewBuffer(data))
+	req, err := http.NewRequest(http.MethodGet, config.Backend_Endpoint+path, bytes.NewBuffer(dataBytes))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -112,6 +132,33 @@ func FaasReceiptHandler(c echo.Context) error {
 	for k, v := range reqHeader {
 		req.Header.Set(k, v)
 	}
+
+	reqParams := map[string]string{}
+
+	if body.OrderID != nil {
+		reqParams["order_id"] = *body.OrderID
+	}
+	if body.Currency != nil {
+		reqParams["currency"] = *body.Currency
+	}
+	if body.StartDateUnix != nil {
+		reqParams["start_date"] = strconv.FormatInt(*body.StartDateUnix, 10)
+	}
+	if body.EndDateUnix != nil {
+		reqParams["end_date"] = strconv.FormatInt(*body.EndDateUnix, 10)
+	}
+	if body.Limit > 0 {
+		reqParams["limit"] = strconv.Itoa(body.Limit)
+	}
+	if body.Offset < 0 {
+		reqParams["offset"] = strconv.Itoa(body.Offset)
+	}
+
+	query := req.URL.Query()
+	for k, v := range reqParams {
+		query.Add(k, v)
+	}
+	req.URL.RawQuery = query.Encode()
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -145,12 +192,17 @@ func MineQueryAddressesHandler(c echo.Context) error {
 	}
 	data, _ := json.Marshal(body)
 
-	method := strings.ToUpper(http.MethodPost)
+	dataStr := string(data)
+	dataStr = strings.ReplaceAll(dataStr, " ", "")
+	dataStr = strings.ReplaceAll(dataStr, "\n", "")
+	dataStr = strings.ReplaceAll(dataStr, "\t", "")
+
+	method := http.MethodPost
 	path := "/v1/mine/query"
 	nonce := randFunc()
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
 
 	fmt.Println("payload: ", payload)
 
@@ -208,12 +260,17 @@ func MineShareHandler(c echo.Context) error {
 	}
 	data, _ := json.Marshal(body)
 
-	method := strings.ToUpper(http.MethodPost)
+	dataStr := string(data)
+	dataStr = strings.ReplaceAll(dataStr, " ", "")
+	dataStr = strings.ReplaceAll(dataStr, "\n", "")
+	dataStr = strings.ReplaceAll(dataStr, "\t", "")
+
+	method := http.MethodPost
 	path := "/v1/mine/share"
 	nonce := randFunc()
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)

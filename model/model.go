@@ -15,16 +15,16 @@ type ResponseBodyPay struct {
 }
 
 type RequestBodyReceipt struct {
-	Pagination Pagination `json:"pagination"`
+	Pagination
 
-	OrderID       *string  `json:"order_id"`
-	Currency      []string `json:"currency"`
-	StartDateUnix *int64   `json:"start_date"`
-	EndDateUnix   *int64   `json:"end_date"`
+	OrderID       *string `query:"order_id"`
+	Currency      *string `query:"currency"`
+	StartDateUnix *int64  `query:"start_date"`
+	EndDateUnix   *int64  `query:"end_date"`
 }
 type Pagination struct {
-	Limit  int `json:"limit"`
-	Offset int `json:"offset"`
+	Limit  int `query:"limit"`
+	Offset int `query:"offset"`
 }
 
 type FaasPaymentReceipt struct {

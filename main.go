@@ -10,7 +10,7 @@ func main() {
 
 	e.POST("/v1/faas/pay", handler.FaasPayHandler)
 
-	e.POST("/v1/faas/receipt", handler.FaasReceiptHandler)
+	e.GET("/v1/faas/receipt", handler.FaasReceiptHandler)
 
 	e.POST("/v1/mine/query", handler.MineQueryAddressesHandler)
 

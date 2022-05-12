@@ -162,39 +162,18 @@ Get payment receipts
 
 ##### Request 
 
-**POST** /v1/faas/receipt
+**GET** /v1/faas/receipt?order_id={order_id}&currency={currency}&start_date={start_date}&end_date={end_end}&limit={limit}&offset={offset}
 
 ##### Headers
 | Key | Value | Note |
 | :---  | :--- | :---        |
 | Content-Type | application/json | required, JSON Type |
-###### Post body
-
-```json
-{
-  "order_id": "00002_1",
-  "currency": [
-    "USDT",
-    "ETH",
-    //...
-  ],
-  "start_date": 1644398340, //unix
-  "end_date": 1644571140, //unix
-  "pagination": {
-      "limit": 15,
-      "offset": 3
-  } 
-}
-```
-
-The request includes the following parameters:
-
-###### Post body
+##### Parameter
 
 | Field | Type  | Note | Description |
 | :---  | :---  | :--- | :---        |
 | order_id | string | optional | Specify customize id |
-| currency | array | optional (USDT, ETH, BTC...) | Specify the valid currency |
+| currency | string | optional (USDT, ETH, BTC...) | Specify the valid currency |
 | start_date | int64 | optional | Specify the start date of query time interval |
 | end_date | int64 | optional | Specify the end date of query time interval |
 | limit | int | optional, Greater than or equal 0 | Specify the query limit |

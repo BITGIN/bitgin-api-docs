@@ -41,12 +41,26 @@ func randFunc() string {
 }
 
 func main() {
-	method := http.MethodPost
+
+  requestBody := {Request Body}
+
+  data, err := ioutil.ReadAll(requestBody)
+  if err != nil {
+    return c.String(http.StatusInternalServerError, err.Error())
+  }
+    
+  dataStr := string(data)
+  dataStr = strings.ReplaceAll(dataStr, " ", "")
+  dataStr = strings.ReplaceAll(dataStr, "\n", "")
+  dataStr = strings.ReplaceAll(dataStr, "\t", "")
+  
+  
+  method := http.MethodPost
 	path := "/v1/faas/pay"
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	nonce := randFunc()
 
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(data))
+	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
@@ -67,9 +81,9 @@ func main() {
 ### Try it now
 - Use [Mock Server](#mock-server) to test BITGIN Fiat-as-a-Service right away.
   - Step 1: Deploy the Mock Server
-  - Step 2: Call [FaaS Payment Through BITGIN Frontend](#faas-payment-through-bitgin-frontend) to get BITGIN Frontend URL
+  - Step 2: Call [Get Payment Embedded URL](#get-payment-embedded-url) to get BITGIN Frontend URL
   - Step 3: Open the URL then complete payment
-  - Step 4: Call [FaaS Get Receipt From BITGIN Backend](#faas-get-receipt-from-bitgin-backend) to acquire payment receipts
+  - Step 4: Call [Get Receipts](#get-receipts) to acquire payment receipts
 
 ##### [Back to top](#table-of-contents)
 

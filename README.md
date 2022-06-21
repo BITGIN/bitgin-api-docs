@@ -24,9 +24,21 @@
 ### How to sign your data ?
 - Please refer to the code snippet on the github project to know how to sign your data.
 	- [Go](https://github.com/BITGIN/bitgin-api-docs/blob/main/handler/handler.go#L24)
+  
 ```go
+import (
+  "bytes"
+  "net/http"
+  "strconv"
+  "crypto/hmac"
+  "crypto/sha256"
+  "encoding/hex"
+  "math/rand"
+  "time"
+  "fmt"
+)
 func sign(payload string) string {
-	hash := hmac.New(sha256.New, []byte(config.Secret))
+	hash := hmac.New(sha256.New, []byte("YOUR_API_SECRET"))
 	hash.Write([]byte(payload))
 	signature := hex.EncodeToString(hash.Sum(nil))
 	return signature
@@ -34,37 +46,24 @@ func sign(payload string) string {
 
 func randFunc() string {
 	rand.Seed(time.Now().Unix())
-	// 2^32 
+	// 2^32
 	x := rand.Int63n(4294967296)
-	fmt.Printf("%08x | %d", x, x)
 	return fmt.Sprintf("%08x", x)
 }
 
 func main() {
-
-  requestBody := {Request Body}
-
-  data, err := ioutil.ReadAll(requestBody)
-  if err != nil {
-    return c.String(http.StatusInternalServerError, err.Error())
-  }
-
-  dataStr := string(data)
-  dataStr = strings.ReplaceAll(dataStr, " ", "")
-  dataStr = strings.ReplaceAll(dataStr, "\n", "")
-  dataStr = strings.ReplaceAll(dataStr, "\t", "")
-  
-  
   method := http.MethodPost
-  path := "/v1/faas/receipts"
+  path := "<path_url>"
   timestamp := strconv.FormatInt(time.Now().Unix(), 10)
   nonce := randFunc()
-  
-  payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
-  fmt.Println("payload: ", payload)
-  
+  payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, string(<request_body>))
   signature := sign(payload)
-  fmt.Println("signature: ", signature)
+  req, _ := http.NewRequest("POST", "<endpoint_url>" + path, bytes.NewBuffer(<request_body>))
+  req.Header.Set("BG-API-KEY", "YOUR_API_KEY")
+  req.Header.Set("BG-API-SIGN", signature)
+  req.Header.Set("BG-API-NONCE", nonce)
+  req.Header.Set("BG-API-TIMESTAMP", timestamp)
+  req.Header.Set("Content-Type","application/json")
 }
 
 ```

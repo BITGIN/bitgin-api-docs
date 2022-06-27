@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -31,9 +32,8 @@ func sign(payload string) string {
 
 func randFunc() string {
 	rand.Seed(time.Now().Unix())
-	// 2^32 - 1
-	x := rand.Int63n(4294967295)
-	fmt.Printf("%08x | %d", x, x)
+	// 2^32
+	x := rand.Int63n(int64(math.Pow(2, 32)))
 	return fmt.Sprintf("%08x", x)
 }
 

@@ -81,34 +81,12 @@ func FaasPayHandler(c echo.Context) error {
 
 func FaasReceiptHandler(c echo.Context) error {
 
-	body := model.RequestBodyReceipt{}
-	if err := c.Bind(&body); err != nil {
-		log.Println("error: ", err.Error())
-		return c.String(http.StatusBadRequest, err.Error())
-	}
-
-	var dataBytes []byte
-	var dataStr string
-	if c.Request().Body != nil {
-		data, err := ioutil.ReadAll(c.Request().Body)
-		if err != nil {
-			return c.String(http.StatusInternalServerError, err.Error())
-		}
-		dataBytes = data
-
-		c.Request().Body = ioutil.NopCloser(bytes.NewReader(data))
-		dataStr = string(data)
-		dataStr = strings.ReplaceAll(dataStr, " ", "")
-		dataStr = strings.ReplaceAll(dataStr, "\n", "")
-		dataStr = strings.ReplaceAll(dataStr, "\t", "")
-	}
-
-	method := http.MethodGet
+	method := strings.ToUpper(http.MethodGet)
 	path := "/v1/faas/receipt"
 	nonce := randFunc()
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	payload := fmt.Sprintf("%s%s%s%s%s", method, path, nonce, timestamp, dataStr)
+	payload := fmt.Sprintf("%s%s%s%s", method, path, nonce, timestamp)
 	fmt.Println("payload: ", payload)
 
 	signature := sign(payload)
@@ -116,10 +94,12 @@ func FaasReceiptHandler(c echo.Context) error {
 
 	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
-	req, err := http.NewRequest(http.MethodGet, config.Backend_Endpoint+path, bytes.NewBuffer(dataBytes))
+	req, err := http.NewRequest(http.MethodGet, config.Backend_Endpoint+path, nil)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
+
+	req.URL.RawQuery = c.Request().URL.Query().Encode()
 
 	reqHeader := map[string]string{
 		"BG-API-KEY":       config.Key,
@@ -132,33 +112,6 @@ func FaasReceiptHandler(c echo.Context) error {
 	for k, v := range reqHeader {
 		req.Header.Set(k, v)
 	}
-
-	reqParams := map[string]string{}
-
-	if body.OrderID != nil {
-		reqParams["order_id"] = *body.OrderID
-	}
-	if body.Currency != nil {
-		reqParams["currency"] = *body.Currency
-	}
-	if body.StartDateUnix != nil {
-		reqParams["start_date"] = strconv.FormatInt(*body.StartDateUnix, 10)
-	}
-	if body.EndDateUnix != nil {
-		reqParams["end_date"] = strconv.FormatInt(*body.EndDateUnix, 10)
-	}
-	if body.Limit > 0 {
-		reqParams["limit"] = strconv.Itoa(body.Limit)
-	}
-	if body.Offset < 0 {
-		reqParams["offset"] = strconv.Itoa(body.Offset)
-	}
-
-	query := req.URL.Query()
-	for k, v := range reqParams {
-		query.Add(k, v)
-	}
-	req.URL.RawQuery = query.Encode()
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -173,6 +126,8 @@ func FaasReceiptHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
+
+	fmt.Println("resp:", string(respbody))
 
 	var apiRes model.ApiResponseFaasReceipt
 	err = json.Unmarshal(respbody, &apiRes)
@@ -211,7 +166,7 @@ func MineQueryAddressesHandler(c echo.Context) error {
 
 	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
-	req, err := http.NewRequest("POST", config.Backend_Endpoint+path, bytes.NewBuffer(data))
+	req, err := http.NewRequest(http.MethodPost, config.Backend_Endpoint+path, bytes.NewBuffer(data))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -278,7 +233,7 @@ func MineShareHandler(c echo.Context) error {
 
 	log.Printf("key:%s&sign:%s&nonce:%s&timestamp:%s", config.Key, signature, nonce, timestamp)
 
-	req, err := http.NewRequest("POST", config.Backend_Endpoint+path, bytes.NewBuffer(data))
+	req, err := http.NewRequest(http.MethodPost, config.Backend_Endpoint+path, bytes.NewBuffer(data))
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}

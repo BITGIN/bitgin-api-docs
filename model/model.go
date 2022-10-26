@@ -14,19 +14,6 @@ type ResponseBodyPay struct {
 	URL string `json:"url"`
 }
 
-type RequestBodyReceipt struct {
-	Pagination
-
-	OrderID       *string `query:"order_id"`
-	Currency      *string `query:"currency"`
-	StartDateUnix *int64  `query:"start_date"`
-	EndDateUnix   *int64  `query:"end_date"`
-}
-type Pagination struct {
-	Limit  int `query:"limit"`
-	Offset int `query:"offset"`
-}
-
 type FaasPaymentReceipt struct {
 	PaymentID string    `json:"payment_id"`
 	OrderID   *string   `json:"order_id,omitempty"`
